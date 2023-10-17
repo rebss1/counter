@@ -17,7 +17,7 @@ extension Date {
 }
 
 extension UITextView {
-    func simple_scrollToBottom() {
+    func simpleScrollToBottom() {
         let textCount: Int = text.count
         guard textCount >= 1 else { return }
         scrollRangeToVisible(NSRange(location: textCount - 1, length: 1))
@@ -26,59 +26,53 @@ extension UITextView {
 
 class ViewController: UIViewController {
     
-    func counterValue(){
+    private var count = 0
+    
+    @IBOutlet weak private var countValueLabel: UILabel!
+    
+    @IBOutlet weak private var incrementButton: UIButton!
+    
+    @IBOutlet weak private var decreaseButton: UIButton!
+    
+    @IBOutlet weak private var eraseButton: UIButton!
+    
+    @IBOutlet weak private var textViewWithStrory: UITextView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    private func updateCounterLabel(){
         countValueLabel.text = "Значение счетчика: \(count)"
     }
     
-    func updateStory(operationType: String){
+    private func updateStory(operationType: String){
         textViewWithStrory.text = textViewWithStrory.text + "\n[\(Date().timeOfOperation)]: \(operationType)"
         textViewWithStrory.isEditable = false
-        textViewWithStrory.simple_scrollToBottom()
+        textViewWithStrory.simpleScrollToBottom()
     }
     
-    @IBOutlet weak var countValueLabel: UILabel!
-    
-    @IBOutlet weak var incrementButton: UIButton!
-    
-    var count = 0
-    
-    
-    @IBAction func increaseValue(_ sender: Any) {
+    @IBAction private func increaseValue(_ sender: Any) {
         count = count + 1
-        counterValue()
+        updateCounterLabel()
         updateStory(operationType: "значение изменено на +1")
         
     }
     
-    @IBOutlet weak var decreaseButton: UIButton!
-    
-    
-    @IBAction func decreaseValue(_ sender: Any) {
+    @IBAction private func decreaseValue(_ sender: Any) {
         if count > 0 {
             count = count - 1
-            counterValue()
+            updateCounterLabel()
             updateStory(operationType: "значение изменено на -1")
         } else {
             updateStory(operationType: "попытка уменьшить значение счётчика ниже 0")
         }
     }
     
-    @IBOutlet weak var eraseButton: UIButton!
-    
-    
-    @IBAction func eraseCounter(_ sender: Any) {
+    @IBAction private func eraseCounter(_ sender: Any) {
         count = 0
-        counterValue()
+        updateCounterLabel()
         updateStory(operationType: "значение сброшено")
     }
-    
-    @IBOutlet weak var textViewWithStrory: UITextView!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
-
-
 }
 
